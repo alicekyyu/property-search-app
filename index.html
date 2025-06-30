@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>香港物業搜尋 - 專業版</title>
-    <meta name="description" content="專業物業搜尋平台，提供香港住宅、商舖、村屋等物業資訊">
+    <title>最新銀主盤</title>
+    <meta name="description" content="搜尋最新銀主盤">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
@@ -16,6 +16,7 @@
 
     <script type="text/babel">
         const { useState, useEffect, useMemo } = React;
+        const [showFilters, setShowFilters] = useState(false);
 
         // Simple icon components
         const Search = () => React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' },
@@ -62,6 +63,15 @@
             React.createElement('line', { x1: 16, y1: 2, x2: 16, y2: 6 }),
             React.createElement('line', { x1: 8, y1: 2, x2: 8, y2: 6 }),
             React.createElement('line', { x1: 3, y1: 10, x2: 21, y2: 10 })
+        );
+
+        // Add these to your icon imports
+        const ChevronDown = () => React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2 },
+            React.createElement('polyline', { points: '6,9 12,15 18,9' })
+        );
+
+        const ChevronUp = () => React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2 },
+            React.createElement('polyline', { points: '18,15 12,9 6,15' })
         );
 
         const PropertySearchApp = () => {
@@ -299,7 +309,7 @@
                     React.createElement('div', { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6" },
                         React.createElement('div', { className: "text-center" },
                             React.createElement('h1', { className: "text-4xl font-bold text-blue-600 mb-2" }, '最新銀主盤'),
-                            React.createElement('p', { className: "text-gray-600" }, '')
+                            React.createElement('p', { className: "text-gray-600 text-lg" }, '更新日期: 2025年6月23日')
                         )
                     )
                 ),
@@ -321,168 +331,185 @@
                             )
                         ),
 
-                        // Quick Property Type Buttons
-                        React.createElement('div', { className: "mb-6" },
-                            React.createElement('h4', { className: "text-sm font-medium text-gray-700 mb-3 flex items-center" },
-                                React.createElement(Home, { className: "mr-2" }),
-                                '物業類型'
-                            ),
-                            React.createElement('div', { className: "flex flex-wrap gap-3" },
-                                React.createElement('button', {
-                                    onClick: () => setSelectedType(selectedType === '住宅' ? '' : '住宅'),
-                                    className: `px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                                        selectedType === '住宅' 
-                                            ? 'bg-green-600 text-white shadow-lg transform scale-105' 
-                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
-                                    }`
-                                }, '住宅'),
-                                React.createElement('button', {
-                                    onClick: () => setSelectedType(selectedType === '商舖' ? '' : '商舖'),
-                                    className: `px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                                        selectedType === '商舖' 
-                                            ? 'bg-green-600 text-white shadow-lg transform scale-105' 
-                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
-                                    }`
-                                }, '商舖'),
-                                React.createElement('button', {
-                                    onClick: () => setSelectedType(selectedType === '村屋' ? '' : '村屋'),
-                                    className: `px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                                        selectedType === '村屋' 
-                                            ? 'bg-green-600 text-white shadow-lg transform scale-105' 
-                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
-                                    }`
-                                }, '村屋'),
-                                React.createElement('button', {
-                                    onClick: () => setSelectedType(selectedType === '寫字樓' ? '' : '寫字樓'),
-                                    className: `px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                                        selectedType === '寫字樓' 
-                                            ? 'bg-green-600 text-white shadow-lg transform scale-105' 
-                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
-                                    }`
-                                }, '寫字樓'),
-                                React.createElement('button', {
-                                    onClick: () => setSelectedType(selectedType === '有蓋車位' ? '' : '有蓋車位'),
-                                    className: `px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                                        selectedType === '有蓋車位' 
-                                            ? 'bg-green-600 text-white shadow-lg transform scale-105' 
-                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
-                                    }`
-                                }, '車位')
-                            )
-                        ),
 
-                        // Quick Room Count Buttons - Only for 住宅/村屋
-                        (selectedType === '住宅' || selectedType === '村屋' || !selectedType) && React.createElement('div', { className: "mb-6" },
-                            React.createElement('h4', { className: "text-sm font-medium text-gray-700 mb-3 flex items-center" },
-                                React.createElement(Home, { className: "mr-2" }),
-                                '房間數目',
-                                React.createElement('span', { className: "text-xs text-gray-500 ml-2" }, '(住宅/村屋)')
-                            ),
-                            React.createElement('div', { className: "flex flex-wrap gap-3" },
-                                React.createElement('button', {
-                                    onClick: () => setSelectedRooms(selectedRooms === '0' ? '' : '0'),
-                                    className: `px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                                        selectedRooms === '0' 
-                                            ? 'bg-purple-600 text-white shadow-lg transform scale-105' 
-                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
-                                    }`
-                                }, '開放式'),
-                                roomCounts.filter(count => count > 0).map(count => 
+                    // Toggle button
+                    React.createElement('button', {
+                        onClick: () => setShowFilters(!showFilters),
+                        className: "flex items-center px-4 py-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition-colors"
+                    }, 
+                        React.createElement(Filter, { className: "mr-2" }),
+                        '進階篩選',
+                        showFilters ? React.createElement(ChevronUp, { className: "ml-2" }) : React.createElement(ChevronDown, { className: "ml-2" })
+                    )
+
+                    // Conditional filters
+                    showFilters && React.createElement('div', { className: "border-t border-gray-200 pt-6 space-y-6" },
+                            // All your existing filter buttons here
+
+                            // Quick Property Type Buttons
+                            React.createElement('div', { className: "mb-6" },
+                                React.createElement('h4', { className: "text-sm font-medium text-gray-700 mb-3 flex items-center" },
+                                    React.createElement(Home, { className: "mr-2" }),
+                                    '物業類型'
+                                ),
+                                React.createElement('div', { className: "flex flex-wrap gap-3" },
                                     React.createElement('button', {
-                                        key: count,
-                                        onClick: () => setSelectedRooms(selectedRooms === count.toString() ? '' : count.toString()),
+                                        onClick: () => setSelectedType(selectedType === '住宅' ? '' : '住宅'),
                                         className: `px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                                            selectedRooms === count.toString() 
+                                            selectedType === '住宅' 
+                                                ? 'bg-green-600 text-white shadow-lg transform scale-105' 
+                                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
+                                        }`
+                                    }, '住宅'),
+                                    React.createElement('button', {
+                                        onClick: () => setSelectedType(selectedType === '商舖' ? '' : '商舖'),
+                                        className: `px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                                            selectedType === '商舖' 
+                                                ? 'bg-green-600 text-white shadow-lg transform scale-105' 
+                                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
+                                        }`
+                                    }, '商舖'),
+                                    React.createElement('button', {
+                                        onClick: () => setSelectedType(selectedType === '村屋' ? '' : '村屋'),
+                                        className: `px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                                            selectedType === '村屋' 
+                                                ? 'bg-green-600 text-white shadow-lg transform scale-105' 
+                                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
+                                        }`
+                                    }, '村屋'),
+                                    React.createElement('button', {
+                                        onClick: () => setSelectedType(selectedType === '寫字樓' ? '' : '寫字樓'),
+                                        className: `px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                                            selectedType === '寫字樓' 
+                                                ? 'bg-green-600 text-white shadow-lg transform scale-105' 
+                                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
+                                        }`
+                                    }, '寫字樓'),
+                                    React.createElement('button', {
+                                        onClick: () => setSelectedType(selectedType === '有蓋車位' ? '' : '有蓋車位'),
+                                        className: `px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                                            selectedType === '有蓋車位' 
+                                                ? 'bg-green-600 text-white shadow-lg transform scale-105' 
+                                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
+                                        }`
+                                    }, '車位')
+                                )
+                            ),
+
+                            // Quick Room Count Buttons - Only for 住宅/村屋
+                            (selectedType === '住宅' || selectedType === '村屋' || !selectedType) && React.createElement('div', { className: "mb-6" },
+                                React.createElement('h4', { className: "text-sm font-medium text-gray-700 mb-3 flex items-center" },
+                                    React.createElement(Home, { className: "mr-2" }),
+                                    '房間數目',
+                                    React.createElement('span', { className: "text-xs text-gray-500 ml-2" }, '(住宅/村屋)')
+                                ),
+                                React.createElement('div', { className: "flex flex-wrap gap-3" },
+                                    React.createElement('button', {
+                                        onClick: () => setSelectedRooms(selectedRooms === '0' ? '' : '0'),
+                                        className: `px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                                            selectedRooms === '0' 
                                                 ? 'bg-purple-600 text-white shadow-lg transform scale-105' 
                                                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
                                         }`
-                                    }, count + '房')
-                                )
-                            )
-                        ),
-
-                        // Quick Price Range Buttons
-                        React.createElement('div', { className: "mb-6" },
-                            React.createElement('h4', { className: "text-sm font-medium text-gray-700 mb-3 flex items-center" },
-                                React.createElement(DollarSign, { className: "mr-2" }),
-                                '價格範圍'
-                            ),
-                            React.createElement('div', { className: "flex flex-wrap gap-3" },
-                                React.createElement('button', {
-                                    onClick: () => setQuickPriceRange(0, 300),
-                                    className: `px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                                        priceRange[0] === 0 && priceRange[1] === 300
-                                            ? 'bg-orange-600 text-white shadow-lg transform scale-105' 
-                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
-                                    }`
-                                }, '300萬以下'),
-                                React.createElement('button', {
-                                    onClick: () => setQuickPriceRange(300, 500),
-                                    className: `px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                                        priceRange[0] === 300 && priceRange[1] === 500
-                                            ? 'bg-orange-600 text-white shadow-lg transform scale-105' 
-                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
-                                    }`
-                                }, '300-500萬'),
-                                React.createElement('button', {
-                                    onClick: () => setQuickPriceRange(500, 800),
-                                    className: `px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                                        priceRange[0] === 500 && priceRange[1] === 800
-                                            ? 'bg-orange-600 text-white shadow-lg transform scale-105' 
-                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
-                                    }`
-                                }, '500-800萬'),
-                                React.createElement('button', {
-                                    onClick: () => setQuickPriceRange(800, 1200),
-                                    className: `px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                                        priceRange[0] === 800 && priceRange[1] === 1200
-                                            ? 'bg-orange-600 text-white shadow-lg transform scale-105' 
-                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
-                                    }`
-                                }, '800-1200萬'),
-                                React.createElement('button', {
-                                    onClick: () => setQuickPriceRange(1200, 2000),
-                                    className: `px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                                        priceRange[0] === 1200 && priceRange[1] === 2000
-                                            ? 'bg-orange-600 text-white shadow-lg transform scale-105' 
-                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
-                                    }`
-                                }, '1200萬以上')
-                            )
-                        ),
-
-                        // Results, Sort & Clear
-                        React.createElement('div', { className: "flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-gray-200" },
-                            React.createElement('div', { className: "flex items-center gap-4" },
-                                React.createElement('div', { className: "bg-blue-50 rounded-xl px-4 py-2" },
-                                    React.createElement('span', { className: "text-sm text-gray-600" }, '搜尋結果: '),
-                                    React.createElement('span', { className: "text-xl font-bold text-blue-600" }, filteredAndSortedProperties.length)
+                                    }, '開放式'),
+                                    roomCounts.filter(count => count > 0).map(count => 
+                                        React.createElement('button', {
+                                            key: count,
+                                            onClick: () => setSelectedRooms(selectedRooms === count.toString() ? '' : count.toString()),
+                                            className: `px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                                                selectedRooms === count.toString() 
+                                                    ? 'bg-purple-600 text-white shadow-lg transform scale-105' 
+                                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
+                                            }`
+                                        }, count + '房')
+                                    )
                                 )
                             ),
 
-                            React.createElement('div', { className: "flex items-center gap-3" },
-                                // Sort Options
-                                React.createElement('select', {
-                                    className: "px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
-                                    value: sortBy,
-                                    onChange: (e) => setSortBy(e.target.value)
-                                },
-                                    React.createElement('option', { value: "" }, '預設排序'),
-                                    React.createElement('option', { value: "price-low" }, '價格 ↑'),
-                                    React.createElement('option', { value: "price-high" }, '價格 ↓'),
-                                    React.createElement('option', { value: "area-large" }, '面積 ↓'),
-                                    React.createElement('option', { value: "area-small" }, '面積 ↑')
+                            // Quick Price Range Buttons
+                            React.createElement('div', { className: "mb-6" },
+                                React.createElement('h4', { className: "text-sm font-medium text-gray-700 mb-3 flex items-center" },
+                                    React.createElement(DollarSign, { className: "mr-2" }),
+                                    '價格範圍'
+                                ),
+                                React.createElement('div', { className: "flex flex-wrap gap-3" },
+                                    React.createElement('button', {
+                                        onClick: () => setQuickPriceRange(0, 300),
+                                        className: `px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                                            priceRange[0] === 0 && priceRange[1] === 300
+                                                ? 'bg-orange-600 text-white shadow-lg transform scale-105' 
+                                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
+                                        }`
+                                    }, '300萬以下'),
+                                    React.createElement('button', {
+                                        onClick: () => setQuickPriceRange(300, 500),
+                                        className: `px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                                            priceRange[0] === 300 && priceRange[1] === 500
+                                                ? 'bg-orange-600 text-white shadow-lg transform scale-105' 
+                                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
+                                        }`
+                                    }, '300-500萬'),
+                                    React.createElement('button', {
+                                        onClick: () => setQuickPriceRange(500, 800),
+                                        className: `px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                                            priceRange[0] === 500 && priceRange[1] === 800
+                                                ? 'bg-orange-600 text-white shadow-lg transform scale-105' 
+                                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
+                                        }`
+                                    }, '500-800萬'),
+                                    React.createElement('button', {
+                                        onClick: () => setQuickPriceRange(800, 1200),
+                                        className: `px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                                            priceRange[0] === 800 && priceRange[1] === 1200
+                                                ? 'bg-orange-600 text-white shadow-lg transform scale-105' 
+                                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
+                                        }`
+                                    }, '800-1200萬'),
+                                    React.createElement('button', {
+                                        onClick: () => setQuickPriceRange(1200, 2000),
+                                        className: `px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                                            priceRange[0] === 1200 && priceRange[1] === 2000
+                                                ? 'bg-orange-600 text-white shadow-lg transform scale-105' 
+                                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
+                                        }`
+                                    }, '1200萬以上')
+                                )
+                            ),
+
+                            // Results, Sort & Clear
+                            React.createElement('div', { className: "flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-gray-200" },
+                                React.createElement('div', { className: "flex items-center gap-4" },
+                                    React.createElement('div', { className: "bg-blue-50 rounded-xl px-4 py-2" },
+                                        React.createElement('span', { className: "text-sm text-gray-600" }, '搜尋結果: '),
+                                        React.createElement('span', { className: "text-xl font-bold text-blue-600" }, filteredAndSortedProperties.length)
+                                    )
                                 ),
 
-                                // Clear All Button
-                                React.createElement('button', {
-                                    onClick: clearAllFilters,
-                                    className: "px-4 py-2 text-sm text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition-colors border border-red-200 hover:border-red-300"
-                                }, '清除篩選')
-                            )
-                        )
-                    ),
+                                React.createElement('div', { className: "flex items-center gap-3" },
+                                    // Sort Options
+                                    React.createElement('select', {
+                                        className: "px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
+                                        value: sortBy,
+                                        onChange: (e) => setSortBy(e.target.value)
+                                    },
+                                        React.createElement('option', { value: "" }, '預設排序'),
+                                        React.createElement('option', { value: "price-low" }, '價格 ↑'),
+                                        React.createElement('option', { value: "price-high" }, '價格 ↓'),
+                                        React.createElement('option', { value: "area-large" }, '面積 ↓'),
+                                        React.createElement('option', { value: "area-small" }, '面積 ↑')
+                                    ),
 
+                                    // Clear All Button
+                                    React.createElement('button', {
+                                        onClick: clearAllFilters,
+                                        className: "px-4 py-2 text-sm text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition-colors border border-red-200 hover:border-red-300"
+                                    }, '清除篩選')
+                                )
+                            )
+                        ),
+                    )
+
+                                
                     // Property Grid
                     React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" },
                         filteredAndSortedProperties.map((property, index) =>
