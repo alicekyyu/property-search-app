@@ -16,7 +16,21 @@
 
     <script type="text/babel">
         const { useState, useEffect, useMemo } = React;
-        const [showFilters, setShowFilters] = useState(false);
+
+        // Configuration - Updated with your Vercel URL
+        const API_CONFIG = {
+            // For development (if running locally)
+            development: 'http://localhost:3000',
+            // For production - Your actual Vercel URL
+            production: 'https://property-search-app.vercel.app',
+            // Auto-detect current environment
+            current: window.location.hostname === 'localhost' ? 'development' : 'production'
+        };
+
+        const getApiUrl = () => {
+            const baseUrl = API_CONFIG[API_CONFIG.current];
+            return `${baseUrl}/api/properties`;
+        };
 
         // Simple icon components
         const Search = () => React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' },
@@ -65,13 +79,18 @@
             React.createElement('line', { x1: 3, y1: 10, x2: 21, y2: 10 })
         );
 
-        // Add these to your icon imports
         const ChevronDown = () => React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2 },
             React.createElement('polyline', { points: '6,9 12,15 18,9' })
         );
 
         const ChevronUp = () => React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2 },
             React.createElement('polyline', { points: '18,15 12,9 6,15' })
+        );
+
+        const AlertCircle = () => React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2 },
+            React.createElement('circle', { cx: 12, cy: 12, r: 10 }),
+            React.createElement('line', { x1: 12, y1: 8, x2: 12, y2: 12 }),
+            React.createElement('line', { x1: 12, y1: 16, x2: 12.01, y2: 16 })
         );
 
         const PropertySearchApp = () => {
@@ -83,40 +102,45 @@
             const [areaRange, setAreaRange] = useState([0, 2000]);
             const [sortBy, setSortBy] = useState('');
             const [loading, setLoading] = useState(true);
+            const [error, setError] = useState(null);
+            const [showFilters, setShowFilters] = useState(false);
 
-            // Load data from Vercel API endpoint
+            // Load data from API
             useEffect(() => {
-                const loadDataFromVercelAPI = async () => {
+                const loadDataFromAPI = async () => {
                     try {
-                        console.log('🔐 Loading property data from Vercel API...');
+                        setLoading(true);
+                        setError(null);
                         
-                        const response = await fetch('/api/properties');
+                        console.log('🔐 Loading property data from API...');
+                        console.log('📍 API URL:', getApiUrl());
+                        
+                        const response = await fetch(getApiUrl());
                         
                         if (!response.ok) {
-                            throw new Error(`API error! status: ${response.status}`);
+                            throw new Error(`API 連接失敗 (${response.status})`);
                         }
                         
                         const data = await response.json();
                         
-                        if (!data.properties || data.properties.length === 0) {
-                            throw new Error('No property data received from API');
+                        if (!data.success || !data.properties || data.properties.length === 0) {
+                            throw new Error('未能獲取物業資料');
                         }
                         
-                        console.log('✅ Vercel API response received');
+                        console.log('✅ API response received');
                         console.log('🎉 Successfully loaded', data.properties.length, 'properties');
-                        console.log('📝 Sample property:', data.properties[0]);
                         
                         setProperties(data.properties);
-                        setLoading(false);
                         
                     } catch (error) {
                         console.error('❌ Error loading data from API:', error);
-                        alert(`載入物業資料時發生錯誤: ${error.message}\n\n可能原因：\n1. API 服務尚未部署\n2. 網絡連接問題\n3. 後端配置錯誤\n\n請檢查瀏覽器控制台獲取更多資訊`);
+                        setError(error.message);
+                    } finally {
                         setLoading(false);
                     }
                 };
 
-                loadDataFromVercelAPI();
+                loadDataFromAPI();
             }, []);
 
             // Get unique property types and room counts for filters
@@ -188,6 +212,25 @@
 
             const setQuickPriceRange = (min, max) => {
                 setPriceRange([min, max]);
+            };
+
+            const retryLoading = () => {
+                setError(null);
+                setLoading(true);
+                const loadDataFromAPI = async () => {
+                    try {
+                        const response = await fetch(getApiUrl());
+                        if (!response.ok) throw new Error(`API 連接失敗 (${response.status})`);
+                        const data = await response.json();
+                        if (!data.success || !data.properties) throw new Error('未能獲取物業資料');
+                        setProperties(data.properties);
+                    } catch (error) {
+                        setError(error.message);
+                    } finally {
+                        setLoading(false);
+                    }
+                };
+                loadDataFromAPI();
             };
 
             const PropertyCard = ({ property }) => (
@@ -296,9 +339,29 @@
                 },
                     React.createElement('div', { className: "text-center" },
                         React.createElement('div', { className: "animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto" }),
-                        //React.createElement('p', { className: "mt-4 text-gray-600" }, '連接 Vercel API 載入物業資料中...'),
                         React.createElement('p', { className: "mt-4 text-gray-600" }, '🔄 正在載入最新物業資料...'),
                         React.createElement('p', { className: "mt-2 text-sm text-gray-500" }, '首次載入可能需要幾秒鐘')
+                    )
+                );
+            }
+
+            if (error) {
+                return React.createElement('div', {
+                    className: "min-h-screen bg-gradient-to-br from-blue-50 to-gray-100 flex items-center justify-center p-4"
+                },
+                    React.createElement('div', { className: "max-w-md mx-auto text-center bg-white rounded-2xl shadow-lg p-8" },
+                        React.createElement(AlertCircle, { className: "mx-auto text-red-500 mb-4" }),
+                        React.createElement('h2', { className: "text-xl font-bold text-gray-900 mb-4" }, '載入失敗'),
+                        React.createElement('p', { className: "text-gray-600 mb-6" }, error),
+                        React.createElement('div', { className: "space-y-3" },
+                            React.createElement('button', {
+                                onClick: retryLoading,
+                                className: "w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                            }, '重新載入'),
+                            React.createElement('p', { className: "text-sm text-gray-500" }, 
+                                '如問題持續，請檢查網絡連接或聯絡技術支援'
+                            )
+                        )
                     )
                 );
             }
@@ -331,21 +394,18 @@
                             )
                         ),
 
+                        // Toggle button
+                        React.createElement('button', {
+                            onClick: () => setShowFilters(!showFilters),
+                            className: "flex items-center px-4 py-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition-colors"
+                        }, 
+                            React.createElement(Filter, { className: "mr-2" }),
+                            '進階篩選',
+                            showFilters ? React.createElement(ChevronUp, { className: "ml-2" }) : React.createElement(ChevronDown, { className: "ml-2" })
+                        ),
 
-                    // Toggle button
-                    React.createElement('button', {
-                        onClick: () => setShowFilters(!showFilters),
-                        className: "flex items-center px-4 py-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition-colors"
-                    }, 
-                        React.createElement(Filter, { className: "mr-2" }),
-                        '進階篩選',
-                        showFilters ? React.createElement(ChevronUp, { className: "ml-2" }) : React.createElement(ChevronDown, { className: "ml-2" })
-                    )
-
-                    // Conditional filters
-                    showFilters && React.createElement('div', { className: "border-t border-gray-200 pt-6 space-y-6" },
-                            // All your existing filter buttons here
-
+                        // Conditional filters
+                        showFilters && React.createElement('div', { className: "border-t border-gray-200 pt-6 space-y-6" },
                             // Quick Property Type Buttons
                             React.createElement('div', { className: "mb-6" },
                                 React.createElement('h4', { className: "text-sm font-medium text-gray-700 mb-3 flex items-center" },
@@ -506,9 +566,8 @@
                                     }, '清除篩選')
                                 )
                             )
-                        ),
-                    )
-
+                        )
+                    ),
                                 
                     // Property Grid
                     React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" },
