@@ -182,7 +182,7 @@
 
             const PropertyCard = ({ property }) => (
                 React.createElement('div', {
-                    className: "bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100"
+                    className: "bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 border border-gray-100 hover:border-blue-200"
                 },
                     React.createElement('div', { className: "p-6" },
                         // Address
@@ -286,7 +286,8 @@
                 },
                     React.createElement('div', { className: "text-center" },
                         React.createElement('div', { className: "animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto" }),
-                        React.createElement('p', { className: "mt-4 text-gray-600" }, '連接 Vercel API 載入物業資料中...'),
+                        //React.createElement('p', { className: "mt-4 text-gray-600" }, '連接 Vercel API 載入物業資料中...'),
+                        React.createElement('p', { className: "mt-4 text-gray-600" }, '🔄 正在載入最新物業資料...'),
                         React.createElement('p', { className: "mt-2 text-sm text-gray-500" }, '首次載入可能需要幾秒鐘')
                     )
                 );
@@ -297,8 +298,8 @@
                 React.createElement('div', { className: "bg-white shadow-sm border-b border-gray-200" },
                     React.createElement('div', { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6" },
                         React.createElement('div', { className: "text-center" },
-                            React.createElement('h1', { className: "text-4xl font-bold text-gray-900 mb-2" }, '香港物業搜尋'),
-                            React.createElement('p', { className: "text-gray-600" }, '搜尋您理想的物業 - 專業版')
+                            React.createElement('h1', { className: "text-4xl font-bold text-blue-600 mb-2" }, '最新銀主盤'),
+                            React.createElement('p', { className: "text-gray-600" }, '')
                         )
                     )
                 ),
