@@ -10,6 +10,71 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .property-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+        }
+        
+        .property-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+        
+        .search-input:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            transform: scale(1.02);
+        }
+        
+        .filter-button.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .price-gradient {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+        }
+        
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
 </head>
 <body>
     <div id="root"></div>
@@ -32,7 +97,7 @@
             return `${baseUrl}/api/properties`;
         };
 
-        // Simple icon components
+        // Simple icon components with improved styling
         const Search = () => React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' },
             React.createElement('circle', { cx: 11, cy: 11, r: 8 }),
             React.createElement('path', { d: 'm21 21-4.35-4.35' })
@@ -61,7 +126,7 @@
             React.createElement('path', { d: 'M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z' })
         );
 
-        const Camera = () => React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' },
+        const Camera = () => React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' },
             React.createElement('path', { d: 'M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z' }),
             React.createElement('circle', { cx: 12, cy: 13, r: 3 })
         );
@@ -70,13 +135,6 @@
             React.createElement('path', { d: 'M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z' }),
             React.createElement('polyline', { points: '14,2 14,8 20,8' }),
             React.createElement('polyline', { points: '9,15 11,17 16,12' })
-        );
-
-        const Calendar = () => React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' },
-            React.createElement('rect', { x: 3, y: 4, width: 18, height: 18, rx: 2, ry: 2 }),
-            React.createElement('line', { x1: 16, y1: 2, x2: 16, y2: 6 }),
-            React.createElement('line', { x1: 8, y1: 2, x2: 8, y2: 6 }),
-            React.createElement('line', { x1: 3, y1: 10, x2: 21, y2: 10 })
         );
 
         const ChevronDown = () => React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2 },
@@ -98,6 +156,17 @@
             React.createElement('path', { d: 'M12 9v4' }),
             React.createElement('path', { d: 'm12 17 .01 0' })
         );
+
+        const getPropertyIcon = (type) => {
+            switch(type) {
+                case '住宅': return React.createElement(Home, { className: "w-3 h-3" });
+                case '商舖': return React.createElement('span', { className: "text-xs" }, '🏪');
+                case '村屋': return React.createElement('span', { className: "text-xs" }, '🏘️');
+                case '寫字樓': return React.createElement('span', { className: "text-xs" }, '🏢');
+                case '有蓋車位': return React.createElement('span', { className: "text-xs" }, '🚗');
+                default: return React.createElement(Home, { className: "w-3 h-3" });
+            }
+        };
 
         const PropertySearchApp = () => {
             const [properties, setProperties] = useState([]);
@@ -239,102 +308,123 @@
                 loadDataFromAPI();
             };
 
-const PropertyCard = ({ property }) => (
+            const PropertyCard = ({ property }) => (
                 React.createElement('div', {
-                    className: "bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 hover:border-blue-200 overflow-hidden"
+                    className: "property-card bg-white rounded-2xl shadow-lg hover:shadow-2xl border border-gray-100 hover:border-blue-200 overflow-hidden"
                 },
-                    // Image Section
-                    property['單位相片'] && React.createElement('div', { className: "relative h-48 bg-gray-100" },
-                        React.createElement('a', {
-                            href: property['單位相片'],
-                            target: "_blank",
-                            rel: "noopener noreferrer",
-                            className: "block h-full"
-                        },
-                            React.createElement('div', { 
-                                className: "absolute inset-0 bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center"
+                    // Modern Image Section with gradient overlay
+                    React.createElement('div', { className: "relative h-48 overflow-hidden" },
+                        property['單位相片'] ? 
+                            React.createElement('a', {
+                                href: property['單位相片'],
+                                target: "_blank",
+                                rel: "noopener noreferrer",
+                                className: "block h-full group"
                             },
-                                React.createElement(Camera, { className: "text-white w-8 h-8" }),
-                                React.createElement('span', { className: "text-white ml-2 font-medium" }, '查看相片')
+                                React.createElement('div', { 
+                                    className: "absolute inset-0 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
+                                },
+                                    React.createElement(Camera, { className: "text-white w-8 h-8 animate-float" }),
+                                    React.createElement('span', { className: "text-white ml-3 font-semibold" }, '查看相片')
+                                )
+                            ) : 
+                            React.createElement('div', { 
+                                className: "h-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center"
+                            },
+                                React.createElement('span', { className: "text-gray-600 font-medium" }, '暫無圖片')
+                            ),
+                        
+                        // Property type badge with modern styling
+                        React.createElement('div', { className: "absolute top-4 left-4" },
+                            property['類型'] && React.createElement('span', { 
+                                className: "inline-flex items-center px-3 py-1.5 glass-effect text-gray-700 text-sm font-semibold rounded-full shadow-lg border border-white/30" 
+                            },
+                                getPropertyIcon(property['類型']),
+                                React.createElement('span', { className: "ml-2" }, property['類型'])
                             )
                         ),
-                        // Property type overlay
-                        React.createElement('div', { className: "absolute top-3 left-3" },
-                            property['類型'] && React.createElement('span', { className: "inline-flex items-center px-2 py-1 bg-white bg-opacity-90 text-gray-700 text-xs font-medium rounded shadow-sm border border-gray-200" },
-                                getPropertyIcon(property['類型']),
-                                React.createElement('span', { className: "ml-1" }, property['類型'])
-                            )
+                        
+                        // Status badge
+                        property['狀況'] && React.createElement('div', { className: "absolute top-4 right-4" },
+                            React.createElement('span', { 
+                                className: "px-3 py-1.5 bg-green-500 text-white text-sm font-semibold rounded-full shadow-lg" 
+                            }, property['狀況'])
                         )
                     ),
 
-                    React.createElement('div', { className: "p-5" },
-                        // Address Section
-                        React.createElement('div', { className: "mb-3" },
-                            React.createElement('div', { className: "flex items-start mb-1" },
-                                React.createElement(MapPin, { className: "text-gray-400 mr-2 mt-1 flex-shrink-0 w-4 h-4" }),
-                                React.createElement('div', { className: "min-w-0" },
-                                    React.createElement('p', { className: "font-semibold text-gray-900 text-sm truncate" },
+                    React.createElement('div', { className: "p-6" },
+                        // Address Section with modern typography
+                        React.createElement('div', { className: "mb-4" },
+                            React.createElement('div', { className: "flex items-start mb-2" },
+                                React.createElement(MapPin, { className: "text-blue-500 mr-3 mt-1 flex-shrink-0 w-5 h-5" }),
+                                React.createElement('div', { className: "min-w-0 flex-1" },
+                                    React.createElement('h3', { className: "font-bold text-gray-900 text-lg leading-tight mb-1" },
                                         property['地址 (Simplified version)']
                                     ),
-                                    React.createElement('p', { className: "text-gray-500 text-xs mt-1 line-clamp-2" },
+                                    React.createElement('p', { className: "text-gray-600 text-sm line-clamp-2 leading-relaxed" },
                                         property['物業地址 (Full address)']
                                     )
                                 )
                             )
                         ),
 
-                        // Price - More prominent
-                        React.createElement('div', { className: "mb-4" },
-                            React.createElement('div', { className: "flex items-baseline space-x-2" },
-                                React.createElement('span', { className: "text-2xl font-bold text-gray-900" }, ' + property.displayPrice),
-                                property.displayArea && property.displayArea !== '-' && React.createElement('span', { className: "text-sm text-gray-500" }, 
+                        // Price with gradient effect
+                        React.createElement('div', { className: "mb-5" },
+                            React.createElement('div', { className: "flex items-baseline space-x-3" },
+                                React.createElement('span', { className: "text-3xl font-bold price-gradient" }, 
+                                    property.displayPrice
+                                ),
+                                property.displayArea && property.displayArea !== '-' && property.priceNum && React.createElement('span', { className: "text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded-full" }, 
                                     `${Math.round(property.priceNum * 10000 / parseInt(property.displayArea.replace(',', '')))} psf`
                                 )
                             )
                         ),
 
-                        // Property Details - Horizontal layout 
-                        React.createElement('div', { className: "flex items-center justify-between mb-4" },
-                            React.createElement('div', { className: "flex items-center space-x-4" },
-                                // Layout - keep original wording
+                        // Property Details with modern icons
+                        React.createElement('div', { className: "flex items-center justify-between mb-5" },
+                            React.createElement('div', { className: "flex items-center space-x-6" },
+                                // Layout
                                 property['間隔'] && property['間隔'] !== '-' && React.createElement('div', { className: "flex items-center" },
-                                    React.createElement(Home, { className: "w-4 h-4 text-gray-400 mr-1" }),
-                                    React.createElement('span', { className: "text-sm text-gray-600" }, property['間隔'])
+                                    React.createElement(Home, { className: "w-4 h-4 text-blue-500 mr-2" }),
+                                    React.createElement('span', { className: "text-sm font-medium text-gray-700" }, property['間隔'])
                                 ),
 
                                 // Area
                                 property.displayArea && property.displayArea !== '-' && React.createElement('div', { className: "flex items-center" },
-                                    React.createElement(Ruler, { className: "w-4 h-4 text-gray-400 mr-1" }),
-                                    React.createElement('span', { className: "text-sm text-gray-600" }, 
+                                    React.createElement(Ruler, { className: "w-4 h-4 text-purple-500 mr-2" }),
+                                    React.createElement('span', { className: "text-sm font-medium text-gray-700" }, 
                                         property.displayArea,
-                                        React.createElement('span', { className: "text-xs text-gray-400 ml-1" }, '呎')
+                                        React.createElement('span', { className: "text-xs text-gray-500 ml-1" }, '呎')
                                     )
                                 )
                             )
                         ),
 
-                        // Status badges - 狀況, 契, 落成/入伙年份 in one row
-                        React.createElement('div', { className: "flex flex-wrap gap-2 mb-4" },
-                            property['狀況'] && React.createElement('span', { className: "inline-block px-2 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded" },
-                                property['狀況']
-                            ),
-                            property['契'] === 'YES' && React.createElement('span', { className: "inline-flex items-center px-2 py-1 bg-green-50 text-green-700 text-xs font-medium rounded" },
-                                React.createElement(FileCheck, { className: "mr-1 w-3 h-3" }),
+                        // Status badges with modern styling
+                        React.createElement('div', { className: "flex flex-wrap gap-2 mb-5" },
+                            property['契'] === 'YES' && React.createElement('span', { 
+                                className: "inline-flex items-center px-3 py-1.5 bg-green-100 text-green-800 text-xs font-semibold rounded-full border border-green-200" 
+                            },
+                                React.createElement(FileCheck, { className: "mr-1.5 w-3 h-3" }),
                                 '有契'
                             ),
-                            property['契'] === 'NO' && React.createElement('span', { className: "inline-flex items-center px-2 py-1 bg-red-50 text-red-700 text-xs font-medium rounded border border-red-200" },
-                                React.createElement(AlertTriangle, { className: "mr-1 w-3 h-3" }),
+                            property['契'] === 'NO' && React.createElement('span', { 
+                                className: "inline-flex items-center px-3 py-1.5 bg-red-100 text-red-800 text-xs font-semibold rounded-full border border-red-200" 
+                            },
+                                React.createElement(AlertTriangle, { className: "mr-1.5 w-3 h-3" }),
                                 '無契'
                             ),
-                            property['落成/入伙\n年份'] && property['落成/入伙\n年份'] !== '-' && React.createElement('span', { className: "inline-block px-2 py-1 bg-gray-50 text-gray-700 text-xs font-medium rounded" },
-                                '落成/入伙年份: ' + property['落成/入伙\n年份']
-                            )
+                            property['落成/入伙\n年份'] && property['落成/入伙\n年份'] !== '-' && React.createElement('span', { 
+                                className: "inline-block px-3 py-1.5 bg-blue-100 text-blue-800 text-xs font-semibold rounded-full" 
+                            }, property['落成/入伙\n年份'])
                         ),
 
-                        // Features - More compact
+                        // Features with modern styling
                         property['單位特色'] && React.createElement('div', { className: "mb-4" },
-                            React.createElement('p', { className: "text-xs text-gray-600 bg-gray-50 p-2 rounded border-l-2 border-blue-200 line-clamp-2" },
-                                property['單位特色']
+                            React.createElement('div', { className: "bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-xl border-l-4 border-blue-400" },
+                                React.createElement('p', { className: "text-sm text-gray-700 leading-relaxed line-clamp-2" },
+                                    property['單位特色']
+                                )
                             )
                         )
                     )
@@ -343,28 +433,28 @@ const PropertyCard = ({ property }) => (
             
             if (loading) {
                 return React.createElement('div', {
-                    className: "min-h-screen bg-gradient-to-br from-blue-50 to-gray-100 flex items-center justify-center"
+                    className: "min-h-screen flex items-center justify-center"
                 },
-                    React.createElement('div', { className: "text-center" },
-                        React.createElement('div', { className: "animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto" }),
-                        React.createElement('p', { className: "mt-4 text-gray-600" }, '🔄 正在載入最新物業資料...'),
-                        React.createElement('p', { className: "mt-2 text-sm text-gray-500" }, '首次載入可能需要幾秒鐘')
+                    React.createElement('div', { className: "text-center glass-effect rounded-3xl p-12 shadow-2xl border border-white/30" },
+                        React.createElement('div', { className: "animate-spin rounded-full h-16 w-16 border-4 border-blue-500 border-t-transparent mx-auto mb-6" }),
+                        React.createElement('h2', { className: "text-2xl font-bold text-gray-800 mb-3" }, '🔄 正在載入最新物業資料...'),
+                        React.createElement('p', { className: "text-gray-600" }, '首次載入可能需要幾秒鐘')
                     )
                 );
             }
 
             if (error) {
                 return React.createElement('div', {
-                    className: "min-h-screen bg-gradient-to-br from-blue-50 to-gray-100 flex items-center justify-center p-4"
+                    className: "min-h-screen flex items-center justify-center p-4"
                 },
-                    React.createElement('div', { className: "max-w-md mx-auto text-center bg-white rounded-2xl shadow-lg p-8" },
-                        React.createElement(AlertCircle, { className: "mx-auto text-red-500 mb-4" }),
-                        React.createElement('h2', { className: "text-xl font-bold text-gray-900 mb-4" }, '載入失敗'),
-                        React.createElement('p', { className: "text-gray-600 mb-6" }, error),
-                        React.createElement('div', { className: "space-y-3" },
+                    React.createElement('div', { className: "max-w-md mx-auto text-center glass-effect rounded-3xl shadow-2xl p-10 border border-white/30" },
+                        React.createElement(AlertCircle, { className: "mx-auto text-red-500 mb-6" }),
+                        React.createElement('h2', { className: "text-2xl font-bold text-gray-900 mb-4" }, '載入失敗'),
+                        React.createElement('p', { className: "text-gray-600 mb-8" }, error),
+                        React.createElement('div', { className: "space-y-4" },
                             React.createElement('button', {
                                 onClick: retryLoading,
-                                className: "w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                                className: "w-full px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl hover:from-blue-600 hover:to-purple-700 transition-all duration-300 font-semibold shadow-lg transform hover:scale-105"
                             }, '重新載入'),
                             React.createElement('p', { className: "text-sm text-gray-500" }, 
                                 '如問題持續，請檢查網絡連接或聯絡技術支援'
@@ -374,59 +464,58 @@ const PropertyCard = ({ property }) => (
                 );
             }
 
-            return React.createElement('div', { className: "min-h-screen bg-gradient-to-br from-blue-50 to-gray-100" },
-                // Header - Modern design
-                React.createElement('div', { className: "bg-white shadow-sm border-b border-gray-200" },
-                    React.createElement('div', { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6" },
-                        React.createElement('div', { className: "text-center" },
-                            React.createElement('h1', { className: "text-4xl font-bold text-blue-600 mb-2" }, '最新銀主盤'),
-                            React.createElement('p', { className: "text-gray-600 text-lg" }, '更新日期: 2025年6月23日')
-                        )
+            return React.createElement('div', { className: "min-h-screen pb-12" },
+                // Modern Hero Header
+                React.createElement('div', { className: "hero-gradient text-white py-16 mb-8" },
+                    React.createElement('div', { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center" },
+                        React.createElement('h1', { className: "text-6xl font-bold mb-4 animate-float" }, '🏠 最新銀主盤'),
+                        React.createElement('p', { className: "text-xl text-blue-100 mb-2" }, '精選優質物業，把握投資良機'),
+                        React.createElement('p', { className: "text-blue-200" }, '更新日期: 2025年6月23日')
                     )
                 ),
 
-                // Search and Filters - Modern design
-                React.createElement('div', { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" },
-                    React.createElement('div', { className: "bg-white rounded-2xl shadow-lg p-6 mb-8" },
-                        // Search Bar - Modern design
-                        React.createElement('div', { className: "mb-6" },
+                // Modern Search and Filters
+                React.createElement('div', { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" },
+                    React.createElement('div', { className: "glass-effect rounded-3xl shadow-2xl p-8 mb-8 border border-white/30" },
+                        // Enhanced Search Bar
+                        React.createElement('div', { className: "mb-8" },
                             React.createElement('div', { className: "relative" },
-                                React.createElement(Search, { className: "absolute left-3 top-3 text-gray-400" }),
+                                React.createElement(Search, { className: "absolute left-4 top-4 text-gray-400" }),
                                 React.createElement('input', {
                                     type: "text",
                                     placeholder: "🔍 搜尋地址、地區或物業類型...",
-                                    className: "w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors",
+                                    className: "search-input w-full pl-12 pr-6 py-4 border-2 border-gray-200 rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 text-lg",
                                     value: searchTerm,
                                     onChange: (e) => setSearchTerm(e.target.value)
                                 })
                             )
                         ),
 
-                        // Advanced Filters Toggle Button
-                        React.createElement('div', { className: "flex items-center justify-between mb-4" },
+                        // Results and Filter Toggle
+                        React.createElement('div', { className: "flex items-center justify-between mb-6" },
                             React.createElement('button', {
                                 onClick: () => setShowFilters(!showFilters),
-                                className: "flex items-center px-4 py-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition-colors"
+                                className: "flex items-center px-6 py-3 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-xl transition-all duration-300 font-semibold"
                             }, 
                                 React.createElement(Filter, { className: "mr-2" }),
                                 '進階篩選',
                                 showFilters ? React.createElement(ChevronUp, { className: "ml-2" }) : React.createElement(ChevronDown, { className: "ml-2" })
                             ),
                             
-                            React.createElement('div', { className: "flex items-center gap-4" },
-                                React.createElement('div', { className: "bg-blue-50 rounded-xl px-4 py-2" },
-                                    React.createElement('span', { className: "text-sm text-gray-600" }, '搜尋結果: '),
-                                    React.createElement('span', { className: "text-xl font-bold text-blue-600" }, filteredAndSortedProperties.length)
+                            React.createElement('div', { className: "flex items-center gap-6" },
+                                React.createElement('div', { className: "bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl px-6 py-3 text-white shadow-lg" },
+                                    React.createElement('span', { className: "text-sm font-medium opacity-90" }, '搜尋結果: '),
+                                    React.createElement('span', { className: "text-2xl font-bold" }, filteredAndSortedProperties.length)
                                 )
                             )
                         ),
 
-                        // Collapsible Advanced Filters
-                        showFilters && React.createElement('div', { className: "border-t border-gray-200 pt-6 space-y-6" },
-                            // Property Type Buttons
+                        // Enhanced Collapsible Advanced Filters
+                        showFilters && React.createElement('div', { className: "border-t border-gray-200 pt-8 space-y-8" },
+                            // Property Type with modern buttons
                             React.createElement('div', null,
-                                React.createElement('h4', { className: "text-sm font-medium text-gray-700 mb-3 flex items-center" },
-                                    React.createElement(Home, { className: "mr-2" }),
+                                React.createElement('h4', { className: "text-lg font-bold text-gray-800 mb-4 flex items-center" },
+                                    React.createElement(Home, { className: "mr-3 text-blue-500" }),
                                     '物業類型'
                                 ),
                                 React.createElement('div', { className: "flex flex-wrap gap-3" },
@@ -434,50 +523,50 @@ const PropertyCard = ({ property }) => (
                                         React.createElement('button', {
                                             key: type,
                                             onClick: () => setSelectedType(selectedType === type ? '' : type),
-                                            className: `px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                                            className: `filter-button px-6 py-3 text-sm font-semibold rounded-xl transition-all duration-300 border-2 ${
                                                 selectedType === type 
-                                                    ? 'bg-green-600 text-white shadow-lg transform scale-105' 
-                                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
+                                                    ? 'active' 
+                                                    : 'bg-white text-gray-700 border-gray-200 hover:border-blue-300 hover:bg-blue-50 hover:shadow-md'
                                             }`
                                         }, type === '有蓋車位' ? '車位' : type)
                                     )
                                 )
                             ),
 
-                            // Room Count Buttons
+                            // Room Count with modern buttons
                             (selectedType === '住宅' || selectedType === '村屋' || !selectedType) && React.createElement('div', null,
-                                React.createElement('h4', { className: "text-sm font-medium text-gray-700 mb-3 flex items-center" },
-                                    React.createElement(Home, { className: "mr-2" }),
+                                React.createElement('h4', { className: "text-lg font-bold text-gray-800 mb-4 flex items-center" },
+                                    React.createElement(Home, { className: "mr-3 text-purple-500" }),
                                     '房間數目',
-                                    React.createElement('span', { className: "text-xs text-gray-500 ml-2" }, '(住宅/村屋)')
+                                    React.createElement('span', { className: "text-sm text-gray-500 ml-3 font-normal" }, '(住宅/村屋)')
                                 ),
                                 React.createElement('div', { className: "flex flex-wrap gap-3" },
                                     React.createElement('button', {
                                         onClick: () => setSelectedRooms(selectedRooms === '0' ? '' : '0'),
-                                        className: `px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                                        className: `filter-button px-6 py-3 text-sm font-semibold rounded-xl transition-all duration-300 border-2 ${
                                             selectedRooms === '0' 
-                                                ? 'bg-purple-600 text-white shadow-lg transform scale-105' 
-                                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
+                                                ? 'active' 
+                                                : 'bg-white text-gray-700 border-gray-200 hover:border-purple-300 hover:bg-purple-50 hover:shadow-md'
                                         }`
                                     }, '開放式'),
                                     roomCounts.filter(count => count > 0).map(count => 
                                         React.createElement('button', {
                                             key: count,
                                             onClick: () => setSelectedRooms(selectedRooms === count.toString() ? '' : count.toString()),
-                                            className: `px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                                            className: `filter-button px-6 py-3 text-sm font-semibold rounded-xl transition-all duration-300 border-2 ${
                                                 selectedRooms === count.toString() 
-                                                    ? 'bg-purple-600 text-white shadow-lg transform scale-105' 
-                                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
+                                                    ? 'active' 
+                                                    : 'bg-white text-gray-700 border-gray-200 hover:border-purple-300 hover:bg-purple-50 hover:shadow-md'
                                             }`
                                         }, count + '房')
                                     )
                                 )
                             ),
 
-                            // Price Range Buttons
+                            // Price Range with gradient buttons
                             React.createElement('div', null,
-                                React.createElement('h4', { className: "text-sm font-medium text-gray-700 mb-3 flex items-center" },
-                                    React.createElement(DollarSign, { className: "mr-2" }),
+                                React.createElement('h4', { className: "text-lg font-bold text-gray-800 mb-4 flex items-center" },
+                                    React.createElement(DollarSign, { className: "mr-3 text-green-500" }),
                                     '價格範圍'
                                 ),
                                 React.createElement('div', { className: "flex flex-wrap gap-3" },
@@ -491,21 +580,21 @@ const PropertyCard = ({ property }) => (
                                         React.createElement('button', {
                                             key: range.label,
                                             onClick: () => setQuickPriceRange(range.min, range.max),
-                                            className: `px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                                            className: `filter-button px-6 py-3 text-sm font-semibold rounded-xl transition-all duration-300 border-2 ${
                                                 priceRange[0] === range.min && priceRange[1] === range.max
-                                                    ? 'bg-orange-600 text-white shadow-lg transform scale-105' 
-                                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
+                                                    ? 'active' 
+                                                    : 'bg-white text-gray-700 border-gray-200 hover:border-green-300 hover:bg-green-50 hover:shadow-md'
                                             }`
                                         }, range.label)
                                     )
                                 )
                             ),
 
-                            // Sort and Clear
-                            React.createElement('div', { className: "flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-gray-200" },
-                                React.createElement('div', { className: "flex items-center gap-3" },
+                            // Sort and Clear with modern styling
+                            React.createElement('div', { className: "flex flex-wrap items-center justify-between gap-6 pt-6 border-t border-gray-200" },
+                                React.createElement('div', { className: "flex items-center gap-4" },
                                     React.createElement('select', {
-                                        className: "px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
+                                        className: "px-4 py-3 text-sm border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 bg-white font-medium",
                                         value: sortBy,
                                         onChange: (e) => setSortBy(e.target.value)
                                     },
@@ -519,28 +608,30 @@ const PropertyCard = ({ property }) => (
 
                                 React.createElement('button', {
                                     onClick: clearAllFilters,
-                                    className: "px-4 py-2 text-sm text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition-colors border border-red-200 hover:border-red-300"
+                                    className: "px-6 py-3 text-sm text-red-600 hover:text-red-800 hover:bg-red-50 rounded-xl transition-all duration-300 border-2 border-red-200 hover:border-red-300 font-semibold"
                                 }, '清除篩選')
                             )
                         )
                     ),
                                 
-                    // Property Grid - Modern spacing
-                    React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" },
+                    // Enhanced Property Grid
+                    React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" },
                         filteredAndSortedProperties.map((property, index) =>
                             React.createElement(PropertyCard, { key: index, property: property })
                         )
                     ),
 
-                    // No Results - Modern design
-                    filteredAndSortedProperties.length === 0 && React.createElement('div', { className: "text-center py-12" },
-                        React.createElement('div', { className: "text-gray-400 text-6xl mb-4" }, '🏠'),
-                        React.createElement('h3', { className: "text-xl font-semibold text-gray-600 mb-2" }, '未找到符合條件的物業'),
-                        React.createElement('p', { className: "text-gray-500 mb-4" }, '請調整搜尋條件後再試'),
-                        React.createElement('button', {
-                            onClick: clearAllFilters,
-                            className: "px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                        }, '清除所有篩選')
+                    // Enhanced No Results
+                    filteredAndSortedProperties.length === 0 && React.createElement('div', { className: "text-center py-16" },
+                        React.createElement('div', { className: "glass-effect rounded-3xl p-12 shadow-2xl border border-white/30 max-w-md mx-auto" },
+                            React.createElement('div', { className: "text-6xl mb-6 animate-float" }, '🏠'),
+                            React.createElement('h3', { className: "text-2xl font-bold text-gray-800 mb-4" }, '未找到符合條件的物業'),
+                            React.createElement('p', { className: "text-gray-600 mb-8 leading-relaxed" }, '請調整搜尋條件後再試'),
+                            React.createElement('button', {
+                                onClick: clearAllFilters,
+                                className: "px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl hover:from-blue-600 hover:to-purple-700 transition-all duration-300 font-semibold shadow-lg transform hover:scale-105"
+                            }, '清除所有篩選')
+                        )
                     )
                 )
             );
